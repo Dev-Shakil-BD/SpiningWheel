@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 Minute School - Spinning Wheel</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f7f9fc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+    }
+
+    .header-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .brand-logo {
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .header-user-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #000000;
+      letter-spacing: 0.5px;
+    }
+
+    .app-layout {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      width: 100%;
+      gap: 20px;
+    }
+
+    .left-section {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .left-wheel-section {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: 520px;
+      height: 520px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #wheelCanvas {
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+    }
+
+    .pointer-arrow {
+      position: absolute;
+      right: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 18px solid transparent;
+      border-bottom: 18px solid transparent;
+      border-right: 28px solid #b0bec5;
+      z-index: 5;
+    }
+
+    .suggestions-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .suggestions-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #374151;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .name-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      border-radius: 50px;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, filter 0.2s;
+    }
+
+    .name-pill:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .right-card-section {
+      width: 30%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .card-remains {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 340px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-banner-img {
+      width: 100%;
+      height: 120px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .card-remains h3 {
+      font-size: 16px;
+      color: #000000;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .card-remains textarea {
+      width: 100%;
+      height: 200px;
+      border: none;
+      outline: none;
+      resize: none;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #6b7280;
+      background: transparent;
+    }
+
+    .btn-run {
+      background-color: #ff3b30;
+      color: white;
+      border: none;
+      padding: 12px 0;
+      border-radius: 20px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      transition: background-color 0.2s;
+    }
+
+    .btn-run:hover {
+      background-color: #e02d22;
+    }
+
+    .btn-run:disabled {
+      background-color: #f87171;
+      cursor: not-allowed;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease-in-out;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background-color: #f7f9fc;
+      background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+      background-size: 20px 20px;
+      border-radius: 24px;
+      padding: 25px;
+      width: 75vw;
+      height: 75vh;
+      max-width: 1000px;
+      max-height: 700px;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transform: scale(0.9);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    .video-frame {
+      width: 100%;
+      height: calc(100% - 80px);
+      background: #000000;
+      border-radius: 16px;
+      overflow: hidden;
+      display: block;
+    }
+
+    .video-frame.hidden {
+      display: none !important;
+    }
+
+    .video-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-card.no-video-card {
+      height: auto;
+      min-height: 320px;
+      justify-content: center;
+      align-items: center;
+      padding: 50px 30px;
+    }
+
+    .modal-card.no-video-card .modal-footer {
+      width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      gap: 30px;
+      height: auto;
+    }
+
+    .modal-card.no-video-card .winner-name {
+      font-size: 64px;
+      text-align: center;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 65px;
+      position: relative;
+      padding: 0 10px;
+    }
+
+    .winner-name {
+      font-size: 42px;
+      font-weight: 900;
+      color: #ff5500;
+      letter-spacing: 1.5px;
+      z-index: 2;
+    }
+
+    .btn-remove-next {
+      background-color: #ff3b30;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .btn-remove-next:hover {
+      background-color: #e02d22;
+    }
+
+    @media (max-width: 900px) {
+      .app-layout {
+        flex-direction: column;
+      }
+      .left-section, .right-card-section {
+        width: 100%;
+        justify-content: center;
+      }
+      .wheel-wrapper {
+        width: 360px;
+        height: 360px;
+      }
+      #wheelCanvas {
+        width: 360px;
+        height: 360px;
+      }
+      .modal-card {
+        width: 90vw;
+        height: 80vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+    <div class="header-bar">
+      <img src="10_Minute_School_Logo.webp" alt="10 Minute School Logo" class="brand-logo" id="logoImg">
+      <div class="header-user-name">PARTHONA HOQUE</div>
+    </div>
+
+    <div class="app-layout">
+      <div class="left-section">
+        <div class="left-wheel-section">
+          <div class="wheel-wrapper">
+            <canvas id="wheelCanvas" width="1040" height="1040"></canvas>
+            <div class="pointer-arrow"></div>
+          </div>
+        </div>
+
+        <div class="suggestions-container" id="suggestionsContainer">
+          <div class="suggestions-title">Available Suggestions</div>
+          <div class="pill-list" id="pillList"></div>
+        </div>
+      </div>
+
+      <div class="right-card-section">
+        <div class="card-remains">
+          <img src="cover.JPG" alt="Team" class="card-banner-img">
+          <h3>REMAINS</h3>
+          <textarea id="namesInput" oninput="handleInputUpdate()">Shakil
+Yaad
+Tania
+Maysha
+Tuba
+Rasel</textarea>
+          <button class="btn-run" id="runBtn" onclick="spinWheel()">Run</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal-card" id="modalCard">
+      <div class="video-frame" id="videoFrame">
+        <video id="winnerVideo" controls></video>
+      </div>
+      <div class="modal-footer">
+        <div class="winner-name" id="winnerNameDisplay">TUBA</div>
+        <button class="btn-remove-next" onclick="removeAndNext()">Remove & Next</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="spinSound" src="button-click/spin.mp3" preload="auto" loop></audio>
+
+  <script>
+    const palette = ['#e53935', '#1e88e5', '#f57c00', '#43a047', '#9c27b0', '#00acc1'];
+    const masterList = ["Shakil", "Yaad", "Tania", "Maysha", "Tuba", "Rasel"];
+
+    let names = [];
+    let currentRotation = 0;
+    let isSpinning = false;
+    let selectedWinner = "";
+
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+    const videoElement = document.getElementById("winnerVideo");
+
+    document.getElementById("logoImg").onerror = function() {
+      this.src = "https://10minuteschool.com/assets/icons/10ms-logo.svg";
+    };
+
+    videoElement.addEventListener("error", function() {
+      document.getElementById("videoFrame").classList.add("hidden");
+      document.getElementById("modalCard").classList.add("no-video-card");
+    });
+
+    function getNamesFromInput() {
+      const text = document.getElementById("namesInput").value;
+      return text.split("\n").map(n => n.trim()).filter(n => n.length > 0);
+    }
+
+    function handleInputUpdate() {
+      if (isSpinning) return;
+      names = getNamesFromInput();
+      drawWheel();
+      updateSuggestions();
+    }
+
+    function updateSuggestions() {
+      const pillList = document.getElementById("pillList");
+      const suggestionsContainer = document.getElementById("suggestionsContainer");
+      pillList.innerHTML = "";
+
+      const currentLower = names.map(n => n.toLowerCase());
+      const available = masterList.filter(name => !currentLower.includes(name.toLowerCase()));
+
+      if (available.length === 0) {
+        suggestionsContainer.style.display = "none";
+        return;
+      }
+      
+      suggestionsContainer.style.display = "flex";
+
+      available.forEach((name, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "name-pill";
+        btn.innerText = name;
+        btn.style.backgroundColor = palette[idx % palette.length];
+        btn.onclick = () => addNameToWheel(name);
+        pillList.appendChild(btn);
+      });
+    }
+
+    function addNameToWheel(name) {
+      if (isSpinning) return;
+      const currentText = document.getElementById("namesInput").value.trim();
+      document.getElementById("namesInput").value = currentText ? `${currentText}\n${name}` : name;
+      handleInputUpdate();
+    }
+
+    function getSliceColor(index, total) {
+      if (total <= 1) return palette[0];
+      let colorIndex = index % palette.length;
+      if (index === total - 1 && colorIndex === 0 && total % palette.length === 1) {
+        colorIndex = 1;
+      }
+      return palette[colorIndex];
+    }
+
+    function drawWheel() {
+      const numSlices = names.length;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = centerX - 10;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (numSlices === 0) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = "#e5e7eb";
+        ctx.fill();
+        return;
+      }
+
+      const sliceAngle = (2 * Math.PI) / numSlices;
+
+      for (let i = 0; i < numSlices; i++) {
+        const startAngle = currentRotation + (i * sliceAngle);
+        const endAngle = startAngle + sliceAngle;
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fillStyle = getSliceColor(i, numSlices);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 44px Arial";
+        ctx.fillText(names[i], radius - 50, 16);
+        ctx.restore();
+      }
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 90, 0, 2 * Math.PI);
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+      ctx.strokeStyle = "#d1d5db";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.fillStyle = "#000000";
+      ctx.font = "bold 48px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("C1", centerX, centerY);
+    }
+
+    function spinWheel() {
+      names = getNamesFromInput();
+      if (names.length === 0 || isSpinning) return;
+
+      isSpinning = true;
+      document.getElementById("runBtn").disabled = true;
+
+      const winningIndex = Math.floor(Math.random() * names.length);
+      selectedWinner = names[winningIndex];
+
+      const sliceAngle = (2 * Math.PI) / names.length;
+      const sliceCenter = (winningIndex + 0.5) * sliceAngle;
+      const targetModulo = (2 * Math.PI - sliceCenter) % (2 * Math.PI);
+
+      const fullSpins = 6 * 2 * Math.PI;
+      const startRotation = currentRotation;
+      const currentModulo = startRotation % (2 * Math.PI);
+      
+      let extraRotation = targetModulo - currentModulo;
+      if (extraRotation < 0) extraRotation += 2 * Math.PI;
+
+      const totalTargetRotation = startRotation + fullSpins + extraRotation;
+
+      const startTime = performance.now();
+      const duration = 3400;
+
+      const spinAudio = document.getElementById("spinSound");
+      if (spinAudio) {
+        spinAudio.currentTime = 0;
+        spinAudio.playbackRate = 1.0;
+        spinAudio.play().catch(() => {});
+      }
+
+      function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Cubic ease-out calculation for smooth deceleration
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        currentRotation = startRotation + (totalTargetRotation - startRotation) * easeOut;
+
+        drawWheel();
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          currentRotation = totalTargetRotation;
+          drawWheel();
+          
+          if (spinAudio) {
+            spinAudio.pause();
+            spinAudio.currentTime = 0;
+          }
+
+          setTimeout(() => {
+            isSpinning = false;
+            showModal(selectedWinner);
+          }, 1000);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function showModal(winner) {
+      const modal = document.getElementById("modalOverlay");
+      const modalCard = document.getElementById("modalCard");
+      const videoFrame = document.getElementById("videoFrame");
+      const winnerDisplay = document.getElementById("winnerNameDisplay");
+
+      winnerDisplay.innerText = winner.toUpperCase();
+
+      videoFrame.classList.remove("hidden");
+      modalCard.classList.remove("no-video-card");
+
+      videoElement.src = `Selected-video/${winner.toLowerCase()}.mp4`;
+      videoElement.play().catch(() => {});
+
+      modal.classList.add("active");
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("modalOverlay");
+      videoElement.pause();
+      videoElement.removeAttribute("src");
+      modal.classList.remove("active");
+      document.getElementById("runBtn").disabled = false;
+    }
+
+    function handleOverlayClick(event) {
+      const modalCard = document.getElementById("modalCard");
+      if (!modalCard.contains(event.target)) {
+        closeModal();
+      }
+    }
+
+    function removeAndNext() {
+      names = names.filter(n => n !== selectedWinner);
+      document.getElementById("namesInput").value = names.join("\n");
+      closeModal();
+      drawWheel();
+      updateSuggestions();
+    }
+
+    canvas.addEventListener("click", () => {
+      if (!isSpinning) spinWheel();
+    });
+
+    names = getNamesFromInput();
+    drawWheel();
+    updateSuggestions();
+  </script>
+</body>
+</html>

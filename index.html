@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>10 Minute School - Spinning Wheel</title>
+  <title>Developed by Shakil</title>
+  <link rel="icon" type="image/x-icon" href="DevShakil.png">
   <style>
     * {
       box-sizing: border-box;
@@ -265,6 +266,7 @@
       border-radius: 16px;
       overflow: hidden;
       display: block;
+      position: relative;
     }
 
     .video-frame.hidden {
@@ -275,6 +277,16 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    /* Hide WebKit media controls by default and reveal on hover */
+    .video-frame video::-webkit-media-controls {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-frame:hover video::-webkit-media-controls {
+      opacity: 1;
     }
 
     .modal-card.no-video-card {
@@ -359,7 +371,7 @@
   <div class="page-container">
     <div class="header-bar">
       <img src="10_Minute_School_Logo.webp" alt="10 Minute School Logo" class="brand-logo" id="logoImg">
-      <div class="header-user-name">PARTHONA <spna style="color: #e02d22;">HOQUE</spna></div>
+      <div class="header-user-name">PARTHONA <span style="color: #e02d22;">HOQUE</span></div>
     </div>
 
     <div class="app-layout">
@@ -396,7 +408,7 @@ Rasel</textarea>
   <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
     <div class="modal-card" id="modalCard">
       <div class="video-frame" id="videoFrame">
-        <video id="winnerVideo" controls></video>
+        <video id="winnerVideo"></video>
       </div>
       <div class="modal-footer">
         <div class="winner-name" id="winnerNameDisplay">TUBA</div>
@@ -573,7 +585,6 @@ Rasel</textarea>
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Cubic ease-out calculation for smooth deceleration
         const easeOut = 1 - Math.pow(1 - progress, 3);
         currentRotation = startRotation + (totalTargetRotation - startRotation) * easeOut;
 
@@ -611,6 +622,7 @@ Rasel</textarea>
       videoFrame.classList.remove("hidden");
       modalCard.classList.remove("no-video-card");
 
+      videoElement.controls = true;
       videoElement.src = `Selected-video/${winner.toLowerCase()}.mp4`;
       videoElement.play().catch(() => {});
 

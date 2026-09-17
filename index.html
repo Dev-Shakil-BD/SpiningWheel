@@ -58,7 +58,7 @@
       align-items: flex-start;
       width: 100%;
       gap: 20px;
-      padding-top: 80px;
+      padding-top: 40px;
     }
 
     .left-section {
@@ -173,23 +173,78 @@
       object-fit: cover;
     }
 
-    .card-remains h3 {
-      font-size: 16px;
+    .remains-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .remains-header h3 {
+      font-size: 18px;
       color: #000000;
       font-weight: 800;
       letter-spacing: 0.5px;
     }
 
-    .card-remains textarea {
-      width: 100%;
-      height: 200px;
-      border: none;
-      outline: none;
-      resize: none;
-      font-size: 15px;
-      line-height: 1.8;
+    .btn-team-modal {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      transition: background-color 0.2s;
+    }
+
+    .btn-team-modal:hover {
+      background: #e5e7eb;
+    }
+
+    .btn-team-modal svg {
+      width: 18px;
+      height: 18px;
+      fill: #374151;
+    }
+
+    .remains-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .remains-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f3f4f6;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .remains-item .remove-btn {
+      cursor: pointer;
       color: #6b7280;
-      background: transparent;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .remains-item .remove-btn:hover {
+      color: #ef4444;
+      background-color: #e5e7eb;
     }
 
     .btn-run {
@@ -204,6 +259,7 @@
       width: 100%;
       text-align: center;
       transition: background-color 0.2s;
+      margin-top: 8px;
     }
 
     .btn-run:hover {
@@ -236,7 +292,8 @@
       pointer-events: auto;
     }
 
-    .modal-card {
+    /* Winner Modal */
+    .winner-modal-card {
       background-color: #f7f9fc;
       background-image: radial-gradient(#d1d5db 1px, transparent 1px);
       background-size: 20px 20px;
@@ -256,7 +313,7 @@
       transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .modal-overlay.active .modal-card {
+    .modal-overlay.active .winner-modal-card {
       transform: scale(1);
     }
 
@@ -280,7 +337,6 @@
       object-fit: cover;
     }
 
-    /* Hide WebKit media controls by default and reveal on hover */
     .video-frame video::-webkit-media-controls {
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -290,7 +346,7 @@
       opacity: 1;
     }
 
-    .modal-card.no-video-card {
+    .winner-modal-card.no-video-card {
       height: auto;
       min-height: 320px;
       justify-content: center;
@@ -298,7 +354,7 @@
       padding: 50px 30px;
     }
 
-    .modal-card.no-video-card .modal-footer {
+    .winner-modal-card.no-video-card .modal-footer {
       width: 100%;
       flex-direction: column;
       justify-content: center;
@@ -306,7 +362,7 @@
       height: auto;
     }
 
-    .modal-card.no-video-card .winner-name {
+    .winner-modal-card.no-video-card .winner-name {
       font-size: 64px;
       text-align: center;
     }
@@ -344,7 +400,212 @@
       background-color: #e02d22;
     }
 
+    /* Team Management Modal */
+    .team-modal-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 30px;
+      width: 85vw;
+      max-width: 900px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      overflow-y: auto;
+    }
+
+    .team-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .team-modal-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .team-modal-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111827;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-shuffle {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+
+    .btn-shuffle:hover {
+      background-color: #f3f4f6;
+    }
+
+    .btn-shuffle svg {
+      width: 20px;
+      height: 20px;
+      fill: #4b5563;
+    }
+
+    .team-modal-header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .team-select-wrapper {
+      display: flex;
+      align-items: center;
+      background: #000000;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .team-select-wrapper select {
+      background: transparent;
+      color: #ffffff;
+      border: none;
+      outline: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .team-select-wrapper select option {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    .close-modal-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      font-weight: bold;
+      color: #9ca3af;
+      cursor: pointer;
+    }
+
+    .close-modal-btn:hover {
+      color: #111827;
+    }
+
+    .teams-grid {
+      display: grid;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .teams-grid.teams-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .teams-grid.teams-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .teams-grid.teams-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .team-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #ffffff;
+      border-radius: 12px;
+    }
+
+    .team-column-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .team-members-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 180px;
+    }
+
+    .team-member-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f3f4f6;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .member-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .points-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+
+    .points-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111827;
+      min-width: 16px;
+      text-align: center;
+    }
+
+    .btn-point {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-weight: bold;
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0 2px;
+    }
+
+    .btn-point:hover {
+      color: #111827;
+    }
+
+    .team-total-row {
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 2px dashed #e5e7eb;
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+    }
+
     @media (max-width: 900px) {
+      .brand-logo{
+        height: 27px;
+      }
+      .header-user-name{
+        font-size: 18px;
+      }
       .app-layout {
         flex-direction: column;
       }
@@ -360,9 +621,12 @@
         width: 360px;
         height: 360px;
       }
-      .modal-card {
+      .winner-modal-card {
         width: 90vw;
         height: 80vh;
+      }
+      .teams-grid.teams-2, .teams-grid.teams-3, .teams-grid.teams-4 {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -393,21 +657,27 @@
       <div class="right-card-section">
         <div class="card-remains">
           <img src="cover.JPG" alt="Team" class="card-banner-img">
-          <h3>REMAINS</h3>
-          <textarea id="namesInput" oninput="handleInputUpdate()">Tania
-Mehnaz
-Tania
-Maysha
-Tuba
-Rasel</textarea>
+          <div class="remains-header">
+            <h3>REMAINS</h3>
+            <button class="btn-team-modal" onclick="openTeamModal()">
+              <svg viewBox="0 0 24 24">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+              </svg>
+              Team
+            </button>
+          </div>
+
+          <div class="remains-list" id="remainsList"></div>
+
           <button class="btn-run" id="runBtn" onclick="spinWheel()">Run</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Winner Modal -->
   <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
-    <div class="modal-card" id="modalCard">
+    <div class="winner-modal-card" id="modalCard">
       <div class="video-frame" id="videoFrame">
         <video id="winnerVideo"></video>
       </div>
@@ -418,16 +688,49 @@ Rasel</textarea>
     </div>
   </div>
 
+  <!-- Team Management Modal -->
+  <div class="modal-overlay" id="teamModalOverlay" onclick="handleTeamOverlayClick(event)">
+    <div class="team-modal-card" id="teamModalCard">
+      <div class="team-modal-header">
+        <div class="team-modal-header-left">
+          <h2>TEAM</h2>
+          <button class="btn-shuffle" onclick="shuffleTeams()" title="Shuffle Members">
+            <svg viewBox="0 0 24 24">
+              <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="team-modal-header-right">
+          <div class="team-select-wrapper">
+            <span>Total</span>
+            <select id="teamCountSelect" onchange="changeTeamCount(this.value)">
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <button class="close-modal-btn" onclick="closeTeamModal()">&times;</button>
+        </div>
+      </div>
+
+      <div class="teams-grid teams-2" id="teamsGrid"></div>
+    </div>
+  </div>
+
   <audio id="spinSound" src="button-click/spin.mp3" preload="auto" loop></audio>
 
   <script>
     const palette = ['#e53935', '#1e88e5', '#f57c00', '#43a047', '#9c27b0', '#00acc1'];
     const masterList = ["Tania", "Yaad", "Tanisha", "Sorme", "Maysha", "Shakil","Mahir","Suvo","Parthona","Riyad","Wilson","Rehan","Mehnaz","Rasel","Himel","Raihan","Tuba","Israt","Dipto"];
 
-    let names = [];
+    let names = ["Tania", "Mehnaz", "Maysha", "Tuba", "Rasel"];
     let currentRotation = 0;
     let isSpinning = false;
     let selectedWinner = "";
+
+    // Team management state
+    let teamCount = 2;
+    let teamAssignments = []; // [{ name, points, teamIndex }]
 
     const canvas = document.getElementById("wheelCanvas");
     const ctx = canvas.getContext("2d");
@@ -442,16 +745,31 @@ Rasel</textarea>
       document.getElementById("modalCard").classList.add("no-video-card");
     });
 
-    function getNamesFromInput() {
-      const text = document.getElementById("namesInput").value;
-      return text.split("\n").map(n => n.trim()).filter(n => n.length > 0);
+    function renderRemainsList() {
+      const listContainer = document.getElementById("remainsList");
+      listContainer.innerHTML = "";
+      names.forEach((name, index) => {
+        const item = document.createElement("div");
+        item.className = "remains-item";
+        item.innerHTML = `
+          <span>${name}</span>
+          <span class="remove-btn" onclick="removeNameAtIndex(${index})">&times;</span>
+        `;
+        listContainer.appendChild(item);
+      });
     }
 
-    function handleInputUpdate() {
+    function removeNameAtIndex(index) {
       if (isSpinning) return;
-      names = getNamesFromInput();
+      names.splice(index, 1);
+      handleDataUpdate();
+    }
+
+    function handleDataUpdate() {
+      renderRemainsList();
       drawWheel();
       updateSuggestions();
+      syncTeamData();
     }
 
     function updateSuggestions() {
@@ -481,9 +799,8 @@ Rasel</textarea>
 
     function addNameToWheel(name) {
       if (isSpinning) return;
-      const currentText = document.getElementById("namesInput").value.trim();
-      document.getElementById("namesInput").value = currentText ? `${currentText}\n${name}` : name;
-      handleInputUpdate();
+      names.push(name);
+      handleDataUpdate();
     }
 
     function getSliceColor(index, total) {
@@ -550,7 +867,6 @@ Rasel</textarea>
     }
 
     function spinWheel() {
-      names = getNamesFromInput();
       if (names.length === 0 || isSpinning) return;
 
       isSpinning = true;
@@ -646,20 +962,126 @@ Rasel</textarea>
     }
 
     function removeAndNext() {
-      names = names.filter(n => n !== selectedWinner);
-      document.getElementById("namesInput").value = names.join("\n");
+      const idx = names.indexOf(selectedWinner);
+      if (idx > -1) {
+        names.splice(idx, 1);
+      }
       closeModal();
-      drawWheel();
-      updateSuggestions();
+      handleDataUpdate();
+    }
+
+    /* Team Management Functions */
+    function syncTeamData() {
+      const currentNames = [...names];
+      const updatedAssignments = [];
+
+      currentNames.forEach((name, i) => {
+        const existing = teamAssignments.find(item => item.name === name);
+        if (existing) {
+          updatedAssignments.push(existing);
+        } else {
+          updatedAssignments.push({
+            name: name,
+            points: 5,
+            teamIndex: i % teamCount
+          });
+        }
+      });
+
+      teamAssignments = updatedAssignments;
+      rebalanceTeams();
+      renderTeamsUI();
+    }
+
+    function rebalanceTeams() {
+      teamAssignments.forEach(item => {
+        if (item.teamIndex >= teamCount) {
+          item.teamIndex = item.teamIndex % teamCount;
+        }
+      });
+    }
+
+    function changeTeamCount(val) {
+      teamCount = parseInt(val, 10);
+      rebalanceTeams();
+      renderTeamsUI();
+    }
+
+    function shuffleTeams() {
+      const shuffledNames = [...teamAssignments].sort(() => Math.random() - 0.5);
+      shuffledNames.forEach((item, index) => {
+        item.teamIndex = index % teamCount;
+      });
+      teamAssignments = shuffledNames;
+      renderTeamsUI();
+    }
+
+    function adjustPoints(event, memberName, amount) {
+      if (event) event.stopPropagation();
+      const member = teamAssignments.find(m => m.name === memberName);
+      if (member) {
+        member.points = Math.max(0, member.points + amount);
+        renderTeamsUI();
+      }
+    }
+
+    function renderTeamsUI() {
+      const grid = document.getElementById("teamsGrid");
+      grid.className = `teams-grid teams-${teamCount}`;
+      grid.innerHTML = "";
+
+      for (let t = 0; t < teamCount; t++) {
+        const teamCol = document.createElement("div");
+        teamCol.className = "team-column";
+
+        const teamMembers = teamAssignments.filter(m => m.teamIndex === t);
+        const totalPoints = teamMembers.reduce((sum, m) => sum + m.points, 0);
+
+        let membersHTML = "";
+        teamMembers.forEach(m => {
+          membersHTML += `
+            <div class="team-member-row">
+              <span class="member-name">${m.name}</span>
+              <div class="points-control">
+                <button class="btn-point" onclick="adjustPoints(event, '${m.name}', -1)">-</button>
+                <span class="points-val">${m.points}</span>
+                <button class="btn-point" onclick="adjustPoints(event, '${m.name}', 1)">+</button>
+              </div>
+            </div>
+          `;
+        });
+
+        teamCol.innerHTML = `
+          <div class="team-column-title">Team ${t + 1}</div>
+          <div class="team-members-list">${membersHTML}</div>
+          <div class="team-total-row">Total Point = ${totalPoints}</div>
+        `;
+
+        grid.appendChild(teamCol);
+      }
+    }
+
+    function openTeamModal() {
+      syncTeamData();
+      document.getElementById("teamModalOverlay").classList.add("active");
+    }
+
+    function closeTeamModal() {
+      document.getElementById("teamModalOverlay").classList.remove("active");
+    }
+
+    function handleTeamOverlayClick(event) {
+      const card = document.getElementById("teamModalCard");
+      if (!card.contains(event.target)) {
+        closeTeamModal();
+      }
     }
 
     canvas.addEventListener("click", () => {
       if (!isSpinning) spinWheel();
     });
 
-    names = getNamesFromInput();
-    drawWheel();
-    updateSuggestions();
+    handleDataUpdate();
   </script>
 </body>
 </html>

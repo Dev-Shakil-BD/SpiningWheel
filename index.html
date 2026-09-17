@@ -186,6 +186,42 @@
       letter-spacing: 0.5px;
     }
 
+    .add-name-form {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .add-name-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .add-name-input:focus {
+      border-color: #3b82f6;
+    }
+
+    .btn-add-name {
+      background: #231f1f;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-add-name:hover {
+      background: #059669;
+    }
+
     .btn-team-modal {
       background: #f3f4f6;
       border: 1px solid #e5e7eb;
@@ -670,6 +706,11 @@
             </button>
           </div>
 
+          <div class="add-name-form">
+            <input type="text" id="manualNameInput" class="add-name-input" placeholder="Enter name..." onkeydown="handleManualInputKeyDown(event)">
+            <button class="btn-add-name" onclick="addManualName()">Add</button>
+          </div>
+
           <div class="remains-list" id="remainsList"></div>
 
           <button class="btn-run" id="runBtn" onclick="spinWheel()">Run</button>
@@ -804,6 +845,22 @@
       if (isSpinning) return;
       names.push(name);
       handleDataUpdate();
+    }
+
+    function addManualName() {
+      if (isSpinning) return;
+      const input = document.getElementById("manualNameInput");
+      const trimmedName = input.value.trim();
+      if (trimmedName.length > 0) {
+        addNameToWheel(trimmedName);
+        input.value = "";
+      }
+    }
+
+    function handleManualInputKeyDown(event) {
+      if (event.key === "Enter") {
+        addManualName();
+      }
     }
 
     function getSliceColor(index, total) {
